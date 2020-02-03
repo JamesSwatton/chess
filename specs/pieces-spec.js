@@ -20,3 +20,13 @@ describe('piece', function() {
         assert.deepStrictEqual(actual, [[5, 4], [6, 4]]);
     })
 })
+
+describe('piece', function() {
+    it ('should gather every move position until the edge of the board', function() {
+        const bishop = pieces.bishop;
+        const startPos = [2, 2];
+        bishop.currentPos = startPos;
+        const actual = board.calcMoves(bishop);
+        console.log(actual);
+    })
+})
