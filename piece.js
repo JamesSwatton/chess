@@ -8,4 +8,4 @@ function factoryPiece(player, colour, type, currentPos) {
     }
 }
 
-// module.exports = piece;
+module.exports = factoryPiece;

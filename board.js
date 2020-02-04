@@ -1,7 +1,6 @@
-// const factoryPiece = require('./piece');
+const pieceMoves = require('./pieceMoves');
 
 const Board = {
-
     pieces: [],
 
     boardTemplate: [
@@ -41,21 +40,29 @@ const Board = {
         }    
     },
 
+    getMoves(piece) {
+        if (piece.type === 'p') {
+           return pieceMoves[piece.type][piece.colour].moves; 
+        }
+        return pieceMoves[piece.type];
+    },
+
     calcMoves(piece) {
+        const moves = this.getMoves(piece);
         // array to gather new moves
         let possibleMoves = [];
         // iterate through all moves in piece
-        piece.moves.forEach(move => {
-            const newMove = [];
+        moves.forEach(move => {
+            const newPossibleMove = [];
             for (let i = 0; i < 2; i++) {
                 // add new position to newMove
-                newMove.push(piece.currentPos[i] - move[i]);
+                newPossibleMove.push(piece.currentPos[i] - move[i]);
             }
             // add newMove to possibleMoves
-            possibleMoves.push(newMove);
+            possibleMoves.push(newPossibleMove);
         });
-        return possibleMoves;
+        piece.possibleMoves = possibleMoves;
     },
 }
 
-// module.exports = board;
+module.exports = Board;

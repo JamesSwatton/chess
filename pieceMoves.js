@@ -1,14 +1,26 @@
 const pieceMoves = {
     p: {
-        currentPos: [],
-        moves: [
-            [2, 0], // only for first move - get rid after 
-            [1, 0]
-        ],
-        captureMoves: [
-            [1, 1],
-            [1, -1]
-        ],
+        white: { 
+            moves: [
+                [2, 0], // only for first move - get rid after 
+                [1, 0]
+            ],
+            captureMoves: [
+                [1, 1],
+                [1, -1]
+            ]
+        },
+
+        black: {
+            moves: [
+                [-2, 0], // only for first move - get rid after 
+                [-1, 0]
+            ],
+            captureMoves: [
+                [-1, -1],
+                [-1, 1]
+            ]
+        }
     },
     b: {
         moves: [
