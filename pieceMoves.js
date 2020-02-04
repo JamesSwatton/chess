@@ -1,5 +1,5 @@
-const pieces = {
-    pawn: {
+const pieceMoves = {
+    p: {
         currentPos: [],
         moves: [
             [2, 0], // only for first move - get rid after 
@@ -9,9 +9,8 @@ const pieces = {
             [1, 1],
             [1, -1]
         ],
-        possibleMoves: [],
     },
-    bishop: {
+    b: {
         moves: [
             [
                 [-1, -1],
@@ -51,9 +50,8 @@ const pieces = {
             ],
 
         ],
-        possibleMoves: [],
     },
-    knight: {
+    k: {
         moves: [
             [-2, -1],
             [-2, 1],
@@ -64,9 +62,8 @@ const pieces = {
             [1, -2],
             [1, 2]
         ],
-        possibleMoves: [],
     },
-    rook: {
+    r: {
         moves: [
             [
                 [-1, 0],
@@ -105,9 +102,8 @@ const pieces = {
                 [0, 7]
             ],
         ],
-        possibleMoves: [],
     },
-    queen: {
+    q: {
         moves : [
             [
                 [-1, -1],
@@ -182,9 +178,8 @@ const pieces = {
                 [0, 7]
             ],
         ],
-        possibleMoves: [],
     },
-    king: {
+    K: {
         moves: [
             [-1, 0],
             [1, 0],
@@ -195,8 +190,7 @@ const pieces = {
             [1, -1],
             [1, 1]
         ],
-        possibleMoves: [],
     }
 }
 
-module.exports = pieces;
+module.exports = pieceMoves;

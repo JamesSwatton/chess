@@ -6,35 +6,13 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-   <div id="board-container"></div>
-   <script>
-       const boardTemplate = [
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010"
-       ]
-       const boardContainer = document.getElementById('board-container');
-       for (let y = 0; y < 8; y++) {
-           for (let x = 0; x < 8; x++) {
-               console.log(boardTemplate[y][x])
-               if (boardTemplate[y][x] === "0") {
-                   const whiteSquare = document.createElement('div');
-                   whiteSquare.className = 'grid-square';
-                   whiteSquare.style.backgroundColor = '#f0d9b5';
-                   boardContainer.appendChild(whiteSquare);
-               } else {
-                   const blackSquare = document.createElement('div');
-                   blackSquare.className = 'grid-square';
-                   blackSquare.style.backgroundColor = '#B58863';
-                   boardContainer.appendChild(blackSquare);
-               }
-           }
-       }
-   </script>
+    <div id="game">
+        <div id="board-container"></div>
+        <div id="piece-container"></div>
+    </div>
+    <script src="./piece.js"></script>
+    <script src="./board.js"></script>
+    <script src="./renderGame.js"></script>
+    <script src="./main.js"></script>
 </body>
 </html>

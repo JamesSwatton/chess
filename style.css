@@ -1,12 +1,42 @@
+:root {
+    --width: 970px;
+    --height: calc(var(--width) / 1.618);
+}
+
 * {
     margin: 0 auto;
     padding: 0;
+    box-sizing: border-box;
+}
+
+#game {
+    margin: 80px;
+    width: var(--width);
+    height: var(--height);
+    display: grid;
+    grid-template-columns: 61.8% 38.2%;
+    grid-template-rows: 10% 90%;
+    grid-template-areas: 
+        "A B"
+        "A C";
+
 }
 
 #board-container {
-    margin-top: 50px;
-    width: 600px;
-    height: 600px;
+    /* margin-top: 50px; */
+    width: 100%;
+    height: 100%;
+    grid-area: A;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+
+#piece-container {
+    /* margin-top: 50px; */
+    width: 100%;
+    height: 100%;
+    grid-area: A;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -15,4 +45,17 @@
 .grid-square {
     width: 100%;
     height: 100%;
+}
+
+.piece {
+    display: flex;
+    font-size: 40px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.piece:hover {
+    cursor: pointer;
 }
