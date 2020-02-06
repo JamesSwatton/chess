@@ -1,6 +1,6 @@
-const board = require('../board'); 
-const moves = require('../pieceMoves');
-const factoryPiece = require('../piece');
+const board = require('../src/board'); 
+const moves = require('../src/pieceMoves');
+const factoryPiece = require('../src/factoryPiece');
 const assert = require('assert');
 
 describe('piece', function() {
@@ -11,6 +11,20 @@ describe('piece', function() {
         assert.deepStrictEqual(actual, [[4, 4], [5, 4]]);
     })
 })
+describe('board', function() {
+    // beforeEach(function() {
+        
+    // })
+    it( 'should detect if position is outside the board', function() {
+        let insideBoard = [4, 5];
+        let outsideBoard = [-1, 5];
+        const insideActual = board.isInsideBoard(insideBoard);
+        const outsideActual = board.isInsideBoard(outsideBoard)
+        assert.equal(insideActual, true);
+        assert.equal(outsideActual, false);
+    })
+})
+
 
 // describe('piece', function() {
 //     it ('should gather new moves', function() {

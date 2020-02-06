@@ -48,6 +48,16 @@ const Board = {
         }
         return pieceMoves[piece.type];
     },
+    isInsideBoard(move) {
+        let results = [];
+        move.forEach(pos => {
+            results.push(pos >= 0 && pos <= 7)
+        })
+        return results.every(res => {
+            return res === true;
+        })
+    },
+
 
     calcMoves(piece) {
         const moves = this.getMoves(piece);
