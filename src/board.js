@@ -1,4 +1,5 @@
 const pieceMoves = require('./pieceMoves');
+const factoryPiece = require('./factoryPiece')
 
 
 const Board = {

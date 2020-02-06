@@ -1,5 +1,6 @@
 const RenderGame = {
 
+
     boardTemplate: [
         "01010101",
         "10101010",
@@ -31,7 +32,9 @@ const RenderGame = {
     },
 
     renderCheckedBoard() {
-        boardContainer = document.getElementById('board-container');
+        const boardContainer = document.getElementById('board-container');
+        console.log(boardContainer)
+        
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 if (this.boardTemplate[y][x] === "0") {
@@ -44,13 +47,14 @@ const RenderGame = {
                     blackSquare.className = 'grid-square';
                     blackSquare.style.backgroundColor = '#B58863';
                     boardContainer.appendChild(blackSquare);
+                    
                 }
             }
         }
     },
 
     renderPieces(pieces) {
-        pieceContainer = document.getElementById('piece-container');
+        const pieceContainer = document.getElementById('piece-container');
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 let currentPiece = pieces[y][x];
@@ -69,4 +73,4 @@ const RenderGame = {
 
 }
 
-module.exports = renderGame;
+module.exports = RenderGame;

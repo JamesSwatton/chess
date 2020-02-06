@@ -2,14 +2,17 @@
   "name": "chess",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "app.js",
   "scripts": {
-    "test": "mocha specs"
+    "test": "mocha specs",
+    "build": "webpack -w"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^7.0.1"
+    "mocha": "^7.0.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   }
 }
