@@ -1,15 +1,15 @@
 const RenderGame = {
 
     boardTemplate: [
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010",
-           "01010101",
-           "10101010"
-       ],
+        "01010101",
+        "10101010",
+        "01010101",
+        "10101010",
+        "01010101",
+        "10101010",
+        "01010101",
+        "10101010"
+    ],
 
     pieceSymbols: {
         white: {
@@ -31,23 +31,22 @@ const RenderGame = {
     },
 
     renderCheckedBoard() {
-       boardContainer = document.getElementById('board-container');
-       for (let y = 0; y < 8; y++) {
-           for (let x = 0; x < 8; x++) {
-               if (this.boardTemplate[y][x] === "0") {
-                   const whiteSquare = document.createElement('div');
-                   whiteSquare.className = 'grid-square';
-                   whiteSquare.style.backgroundColor = '#f0d9b5';
-                   boardContainer.appendChild(whiteSquare);
-               } else {
-                   const blackSquare = document.createElement('div');
-                   blackSquare.className = 'grid-square';
-                   blackSquare.style.backgroundColor = '#B58863';
-                   boardContainer.appendChild(blackSquare);
-               }
-           }
-       }
-
+        boardContainer = document.getElementById('board-container');
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                if (this.boardTemplate[y][x] === "0") {
+                    const whiteSquare = document.createElement('div');
+                    whiteSquare.className = 'grid-square';
+                    whiteSquare.style.backgroundColor = '#f0d9b5';
+                    boardContainer.appendChild(whiteSquare);
+                } else {
+                    const blackSquare = document.createElement('div');
+                    blackSquare.className = 'grid-square';
+                    blackSquare.style.backgroundColor = '#B58863';
+                    boardContainer.appendChild(blackSquare);
+                }
+            }
+        }
     },
 
     renderPieces(pieces) {
@@ -66,7 +65,6 @@ const RenderGame = {
                 pieceContainer.appendChild(piece);
             }
         }
-
     }
 
 }

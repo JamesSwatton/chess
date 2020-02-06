@@ -10,7 +10,6 @@ const pieceMoves = {
                 [1, -1]
             ]
         },
-
         black: {
             moves: [
                 [-2, 0], // only for first move - get rid after 
@@ -60,7 +59,6 @@ const pieceMoves = {
                 [6, -6],
                 [7, -7]
             ],
-
         ],
     },
     k: {
