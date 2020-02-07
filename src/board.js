@@ -122,6 +122,7 @@ const Board = {
         console.log('possible moves', possibleMoves);
         piece.possibleMoves = possibleMoves;
     },
+   
 }
 
 module.exports = Board;
