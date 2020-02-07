@@ -48,14 +48,9 @@ const Board = {
         }
         return pieceMoves[piece.type];
     },
+
     isInsideBoard(move) {
-        let results = [];
-        move.forEach(pos => {
-            results.push(pos >= 0 && pos <= 7)
-        })
-        return results.every(res => {
-            return res === true;
-        })
+        return move.every(pos => (pos >= 0 && pos <= 7));
     },
 
 
