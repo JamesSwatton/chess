@@ -42,6 +42,32 @@ const Board = {
         }    
     },
 
+    setupTestBoard(board) {
+        for (let y = 0; y < 8; y++) {
+            this.pieces[y] = [];
+            for (let x = 0; x < 8; x++) {
+                if (board[y][x] === '0') {
+                    const blank = {type: 'blank'};
+                    this.pieces[y].push(blank);
+                } else {
+                    let colour;
+                    let player;
+                    const type = board[y][x];
+                    // assign colour
+                    if (y === 0 || y === 1) {
+                        colour = 'black';
+                        player = 2;
+                    } else {
+                        colour = 'white';
+                        player = 1;
+                    }
+                    const piece = factoryPiece(player, colour, type, [y, x]);
+                    this.pieces[y].push(piece);
+                }
+            }
+        }    
+    },
+
     getMoves(piece) {
         if (piece.type === 'p') {
            return pieceMoves[piece.type][piece.colour].moves; 
@@ -53,6 +79,11 @@ const Board = {
         return move.every(pos => (pos >= 0 && pos <= 7));
     },
 
+    isEmptyGridPos(move) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].type === 'blank');
+    },
 
     calcMoves(piece) {
         const moves = this.getMoves(piece);

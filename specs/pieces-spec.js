@@ -12,9 +12,20 @@ describe('piece', function() {
     })
 })
 describe('board', function() {
-    // beforeEach(function() {
-        
-    // })
+    beforeEach(function() {
+        testBoard = [
+            "rkbKqbkr",
+            "pppppppp",
+            "00000000",
+            "000q00p0",
+            "00000000",
+            "00000000",
+            "pppppppp",
+            "rkb0Kbkr",
+        ];
+        board.setupTestBoard(testBoard);
+
+    })
     it( 'should detect if position is outside the board', function() {
         let insideBoard = [4, 5];
         let outsideBoard = [-1, 5];
@@ -22,27 +33,17 @@ describe('board', function() {
         const outsideActual = board.isInsideBoard(outsideBoard)
         assert.equal(insideActual, true);
         assert.equal(outsideActual, false);
+    });
+
+    it('should be able to detect an empty grid space', function() {
+        let emptyPos = [2, 4];
+        let occupiedPos = [1, 1];
+        const emptyActual = board.isEmptyGridPos(emptyPos);
+        const occupiedActual = board.isEmptyGridPos(occupiedPos);
+        assert.equal(emptyActual, true);
+        assert.equal(occupiedActual, false);
     })
+
 })
 
 
-// describe('piece', function() {
-//     it ('should gather new moves', function() {
-//         const pawn = pieces.pawn;
-//         const startPos = [7, 4];
-//         pawn.currentPos = startPos;
-//         const actual = board.calcMoves(pawn);
-//         console.log(actual);
-//         assert.deepStrictEqual(actual, [[5, 4], [6, 4]]);
-//     })
-// })
-
-// describe('piece', function() {
-//     it ('should gather every move position until the edge of the board', function() {
-//         const bishop = pieces.bishop;
-//         const startPos = [2, 2];
-//         bishop.currentPos = startPos;
-//         const actual = board.calcMoves(bishop);
-//         console.log(actual);
-//     })
-// })
