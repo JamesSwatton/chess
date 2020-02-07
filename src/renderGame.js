@@ -61,7 +61,7 @@ const RenderGame = {
                 const piece = document.createElement('div');
                 piece.id = `${y}-${x}`;
                 if (currentPiece.type === 'blank') {
-                    piece.className = `${currentPiece.type}`;
+                    piece.className = `${currentPiece.type} grid-square`;
                 } else {
                     piece.className = `piece ${currentPiece.type} ${currentPiece.colour}`;
                     piece.innerHTML = this.pieceSymbols[currentPiece.colour][currentPiece.type];
@@ -69,6 +69,23 @@ const RenderGame = {
                 pieceContainer.appendChild(piece);
             }
         }
+    },
+
+    renderPath(piece) {
+        const pieceGridPosId = `${piece.currentPos[0]}-${piece.currentPos[1]}`;
+        const pieceElement = document.getElementById(pieceGridPosId);
+        const highlightPlayer = document.createElement('div');
+        highlightPlayer.className = 'highlighted';
+        pieceElement.appendChild(highlightPlayer);
+
+        piece.possibleMoves.forEach(move => {
+            const elementId = `${move[0]}-${move[1]}`;
+            const gridElement = document.getElementById(elementId);
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+
+            gridElement.appendChild(circle);
+        })
     }
 
 }
