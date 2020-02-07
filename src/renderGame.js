@@ -34,7 +34,7 @@ const RenderGame = {
     renderCheckedBoard() {
         const boardContainer = document.getElementById('board-container');
         console.log(boardContainer)
-        
+
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 if (this.boardTemplate[y][x] === "0") {
@@ -47,7 +47,7 @@ const RenderGame = {
                     blackSquare.className = 'grid-square';
                     blackSquare.style.backgroundColor = '#B58863';
                     boardContainer.appendChild(blackSquare);
-                    
+
                 }
             }
         }
@@ -72,19 +72,33 @@ const RenderGame = {
     },
 
     renderPath(piece) {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                // const pathGrid = document.createElement('div');
+                const elementId = `${i}-${j}`;
+                const gridElement = document.getElementById(elementId);
+                gridElement.classList.remove('circle');
+                gridElement.classList.remove('highlighted');
+            }
+        }
         const pieceGridPosId = `${piece.currentPos[0]}-${piece.currentPos[1]}`;
         const pieceElement = document.getElementById(pieceGridPosId);
-        const highlightPlayer = document.createElement('div');
-        highlightPlayer.className = 'highlighted';
-        pieceElement.appendChild(highlightPlayer);
+        pieceElement.classList.add('highlighted');
+        
+        // const highlightPlayer = document.createElement('div');
+        // highlightPlayer.className = 'highlighted';
+        // pieceElement.appendChild(highlightPlayer);
+
+
 
         piece.possibleMoves.forEach(move => {
             const elementId = `${move[0]}-${move[1]}`;
             const gridElement = document.getElementById(elementId);
-            const circle = document.createElement('div');
-            circle.className = 'circle';
+            gridElement.classList.add('circle');
+            // const circle = document.createElement('div');
+            // circle.className = 'circle';
 
-            gridElement.appendChild(circle);
+            // gridElement.appendChild(circle);
         })
     }
 

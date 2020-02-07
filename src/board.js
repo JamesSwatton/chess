@@ -86,6 +86,7 @@ const Board = {
     },
 
     calcMoves(piece) {
+        piece.possibleMoves = [];
         const allPaths = this.getMoves(piece);
         console.log('paths', allPaths);
 
@@ -122,6 +123,7 @@ const Board = {
         console.log('possible moves', possibleMoves);
         piece.possibleMoves = possibleMoves;
     },
+   
 }
 
 module.exports = Board;
