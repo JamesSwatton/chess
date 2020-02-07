@@ -42,8 +42,11 @@
 }
 
 .grid-square {
+    display: flex;
     width: 100%;
     height: 100%;
+    align-items: center;
+    justify-content: center;
 }
 
 .piece {
@@ -57,4 +60,22 @@
 
 .piece:hover {
     cursor: pointer;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #17650f;
+    opacity: 0.6;
+}
+
+.highlighted {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #17650f;
+    filter: blur(10px);
+    opacity: 0.6;
 }

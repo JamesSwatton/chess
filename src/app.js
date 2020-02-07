@@ -17,4 +17,6 @@ renderGame.renderPieces(board.pieces);
         const pawn = factoryPiece(1, 'white', 'p', [6, 4]);
         board.calcMoves(pawn);
 
+    renderGame.renderPath(pawn);
+
 });
