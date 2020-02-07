@@ -86,19 +86,40 @@ const Board = {
     },
 
     calcMoves(piece) {
-        const moves = this.getMoves(piece);
+        const allPaths = this.getMoves(piece);
+        console.log('paths', allPaths);
+
         // array to gather new moves
         let possibleMoves = [];
-        // iterate through all moves in piece
-        moves.forEach(move => {
-            const newPossibleMove = [];
-            for (let i = 0; i < 2; i++) {
-                // add new position to newMove
-                newPossibleMove.push(piece.currentPos[i] - move[i]);
-            }
-            // add newMove to possibleMoves
-            possibleMoves.push(newPossibleMove);
-        });
+
+        allPaths.forEach(path => {
+            console.log('path', path);
+            // iterate through all moves in piece
+                let pathObstruction = false;
+
+            path.forEach(move => {
+                console.log('move', move);
+                if (!pathObstruction) {
+                    const newPossibleMove = [];
+                    for (let i = 0; i < 2; i++) {
+                        // add new position to newMove
+                        newPossibleMove.push(piece.currentPos[i] - move[i]);
+                    }
+                    if (this.isInsideBoard(newPossibleMove)) {
+                        if (this.isEmptyGridPos(newPossibleMove)) {
+                            // add newMove to possibleMoves
+                            possibleMoves.push(newPossibleMove);
+                        } else {
+                            pathObstruction = true;
+                        }
+                    } else {
+                        pathObstruction = true;
+                    }
+                }
+                console.log(pathObstruction);
+            });
+        })
+        console.log('possible moves', possibleMoves);
         piece.possibleMoves = possibleMoves;
     },
 }

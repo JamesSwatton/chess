@@ -5,12 +5,14 @@ const assert = require('assert');
 
 describe('piece', function() {
     it ('should have moves when calculated', function() {
+        board.setupBoard();
         const pawn = factoryPiece(1, 'white', 'p', [6, 4]);
         board.calcMoves(pawn);
         const actual = pawn.possibleMoves;
         assert.deepStrictEqual(actual, [[4, 4], [5, 4]]);
     })
-})
+});
+
 describe('board', function() {
     beforeEach(function() {
         testBoard = [
