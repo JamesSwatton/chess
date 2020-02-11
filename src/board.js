@@ -100,7 +100,7 @@ const Board = {
                 let pathObstruction = false;
 
             path.forEach(move => {
-                // console.log('move', move);
+                console.log('move', move);
                 if (!pathObstruction) {
                     const newPossibleMove = [];
                     for (let i = 0; i < 2; i++) {
