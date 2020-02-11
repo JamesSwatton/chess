@@ -55,6 +55,7 @@ const RenderGame = {
 
     renderPieces(pieces) {
         const pieceContainer = document.getElementById('piece-container');
+        pieceContainer.innerHTML = '';
         for (let y = 0; y < 8; y++) {
             for (let x = 0; x < 8; x++) {
                 let currentPiece = pieces[y][x];
