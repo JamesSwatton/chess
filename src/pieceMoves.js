@@ -3,8 +3,8 @@ const pieceMoves = {
         white: { 
             moves: [
                 [
-                    [2, 0], // only for first move - get rid after 
-                    [1, 0]
+                    [1, 0],
+                    [2, 0] // only for first move - get rid after 
                 ]
             ],
             captureMoves: [
@@ -16,12 +16,16 @@ const pieceMoves = {
         },
         black: {
             moves: [
-                [-2, 0], // only for first move - get rid after 
-                [-1, 0]
+                [
+                    [-1, 0],
+                    [-2, 0]
+                ]
             ],
             captureMoves: [
-                [-1, -1],
-                [-1, 1]
+                [
+                    [-1, -1],
+                    [-1, 1]
+                ]
             ]
         }
     },

@@ -68,9 +68,17 @@ const Board = {
         }    
     },
 
+    isPawnStart(pawn) {
+        return (pawn.currentPos[0] === 6 || pawn.currentPos[0] === 1);
+    },
+
     getMoves(piece) {
         if (piece.type === 'p') {
-           return pieceMoves[piece.type][piece.colour].moves; 
+            if (this.isPawnStart(piece)) {
+                return pieceMoves[piece.type][piece.colour].moves; 
+            } else {
+                return [pieceMoves[piece.type][piece.colour].moves[0].slice(0, 1)]; 
+            }
         }
         return pieceMoves[piece.type];
     },
