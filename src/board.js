@@ -76,6 +76,7 @@ const Board = {
     },
 
     isInsideBoard(move) {
+        console.log('is inside board: ', move)
         return move.every(pos => (pos >= 0 && pos <= 7));
     },
 
