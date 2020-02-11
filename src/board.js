@@ -100,7 +100,7 @@ const Board = {
                 let pathObstruction = false;
 
             path.forEach(move => {
-                console.log('move', move);
+                // console.log('move', move);
                 if (!pathObstruction) {
                     const newPossibleMove = [];
                     for (let i = 0; i < 2; i++) {
@@ -124,6 +124,26 @@ const Board = {
         console.log('possible moves', possibleMoves);
         piece.possibleMoves = possibleMoves;
     },
+
+    movePiece(piece, position) {
+        console.log(piece)
+        console.log(position)
+        const y = position[0];
+        const x = position[1];
+        const oldPosition = piece.currentPos;
+        piece.currentPos = [y, x];
+
+        this.pieces[y][x] = piece;
+        this.pieces[oldPosition[0]][oldPosition[1]] = {type: 'blank'};
+    },
+
+    clearAllPossibleMoves() {
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                this.pieces[i][j].possibleMoves = [];
+            }
+        }
+    }
    
 }
 

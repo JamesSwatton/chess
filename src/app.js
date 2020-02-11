@@ -3,40 +3,47 @@ const renderGame = require('./renderGame')
 const factoryPiece = require('./factoryPiece');
 
 document.addEventListener("DOMContentLoaded", () => {
+    let selectedPiece;
+    let selectedMovePos;
+
     board.setupBoard();
-    // console.log(board.pieces);
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
-
-    // const bishop = factoryPiece(1, 'white', 'b', [6, 4]);
-    // board.calcMoves(bishop);
-
-    // const queen = factoryPiece(1, 'white', 'q', [4, 4]);
-    // board.calcMoves(queen);
-
-    // const pawn = factoryPiece(1, 'white', 'p', [6, 4]);
-    // board.calcMoves(pawn);
-
-    // renderGame.renderPath(pawn);
-
 
     document.getElementById('piece-container').addEventListener('click', event => {
         const clickPositionString = event.target.id.split('-')
         const clickPosition = clickPositionString.map(index => +index)
         const y = clickPosition[0]
         const x = clickPosition[1]
-        const selectedPiece = board.pieces[y][x]
+        const currentSelectedPosition = board.pieces[y][x]
 
+        if (currentSelectedPosition.type !== 'blank') {
+            selectedPiece = currentSelectedPosition;
 
-
-        board.calcMoves(selectedPiece)
-        renderGame.renderPath(selectedPiece);
-
-        console.log(board.pieces[y][x]);
-
-
+            board.calcMoves(selectedPiece)
+            renderGame.renderPath(selectedPiece);
+        } else {
+            if (selectedPiece) {
+                if (checkForMatchingMovePos(clickPosition, selectedPiece)) {
+                    board.movePiece(selectedPiece, clickPosition);
+                    board.clearAllPossibleMoves();
+                    renderGame.renderPieces(board.pieces);
+                }
+            }
+            selectedPiece = '';
+        }
+        // console.log(selectedPiece);
         // console.log('click', clickPosition);
-
     });
 
+    function checkForMatchingMovePos(position, piece) {
+        let result = false;
+        piece.possibleMoves.forEach(move => {
+            if (move[0] === position[0]
+                && move[1] === position[1]) {
+                result = true;
+            }
+        })
+        return result;
+    }
 });
