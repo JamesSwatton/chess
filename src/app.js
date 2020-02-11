@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (checkForMatchingMovePos(clickPosition, selectedPiece)) {
                     board.movePiece(selectedPiece, clickPosition);
                     board.clearAllPossibleMoves();
+                    renderGame.renderPath(selectedPiece);
                     renderGame.renderPieces(board.pieces);
                 }
             }

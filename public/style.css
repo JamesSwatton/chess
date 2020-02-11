@@ -23,6 +23,7 @@
 
 #board-container {
     /* margin-top: 50px; */
+    z-index: -1;
     width: 100%;
     height: 100%;
     grid-area: A;
@@ -33,6 +34,7 @@
 
 #piece-container {
     /* margin-top: 50px; */
+    z-index: 1;
     width: 100%;
     height: 100%;
     grid-area: A;
@@ -40,7 +42,9 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
 }
+
 #path-container {
+    z-index: 0;
     width: 100%;
     height: 100%;
     grid-area: A;
@@ -75,12 +79,12 @@
     height: 20px;
     border-radius: 50%;
     background-color: #17650f;
-    opacity: 0.6;
     align-self: center;
     justify-self: center;
 }
 
  .highlighted {
+    width: 100%;
+    height: 100%;
     background-color: #17650f;
-    opacity: 0.6;
 }
