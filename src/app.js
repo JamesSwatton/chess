@@ -5,7 +5,7 @@ const factoryPiece = require('./factoryPiece');
 document.addEventListener("DOMContentLoaded", () => {
     let selectedPiece;
     let selectedMovePos;
-    const opponentNumber = 2;
+    let opponentNumber = 2;
 
     board.setupBoard();
     renderGame.renderCheckedBoard();
@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     board.clearAllPossibleMoves();
                     renderGame.renderPath(selectedPiece);
                     renderGame.renderPieces(board.pieces);
+                    swapOpponent();
                 }
             }
             selectedPiece = '';
@@ -48,4 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         return result;
     }
+
+    function swapOpponent(){
+        if(opponentNumber === 2) {
+             opponentNumber = 1
+        } else {
+            opponentNumber = 2
+        }
+    }
+    
 });
