@@ -79,16 +79,18 @@ const Board = {
     getMoves(piece) {
         if (piece.type === 'p') {
             if (this.isPawnStart(piece)) {
-                return pieceMoves[piece.type][piece.colour].moves;
+                return pieceMoves[piece.type][piece.colour];
             } else {
-                return [pieceMoves[piece.type][piece.colour].moves[0].slice(0, 1)];
+                return {
+                    paths: [pieceMoves[piece.type][piece.colour].paths[0].slice(0, 1)],
+                    capturePaths: pieceMoves[piece.type][piece.colour].capturePaths
+                }
             }
         }
         return pieceMoves[piece.type];
     },
 
     isInsideBoard(move) {
-        console.log('is inside board: ', move)
         return move.every(pos => (pos >= 0 && pos <= 7));
     },
 
@@ -106,19 +108,18 @@ const Board = {
 
     calcMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
-        const allPaths = this.getMoves(piece);
-        console.log('paths', allPaths);
+        const allPaths = this.getMoves(piece).paths;
+        const capturePaths = this.getMoves(piece).capturePaths;
+        const isPawn = piece.type === 'p';
 
         // array to gather new moves
         let possibleMoves = [];
 
         allPaths.forEach(path => {
-            console.log('path', path);
             // iterate through all moves in piece
             let pathObstruction = false;
 
             path.forEach(move => {
-                console.log('move', move);
                 if (!pathObstruction) {
                     const newPossibleMove = [];
                     for (let i = 0; i < 2; i++) {
@@ -130,7 +131,7 @@ const Board = {
                         if (this.isEmptyGridPos(newPossibleMove)) {
                             // add newMove to possibleMoves
                             possibleMoves.push(newPossibleMove);
-                        } else if(this.isCapturePiece(newPossibleMove, opponentNumber)) {
+                        } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && !isPawn) {
                             possibleMoves.push(newPossibleMove);
                             pathObstruction = true;
                         } else {
@@ -140,16 +141,30 @@ const Board = {
                         pathObstruction = true;
                     }
                 }
-                console.log(pathObstruction);
             });
         })
-        console.log('possible moves', possibleMoves);
+
+        if (capturePaths) {
+            capturePaths.forEach(path => {
+                
+                path.forEach(move => {
+                    const newPossibleMove = [];
+                    for (let i = 0; i < 2; i++) {
+                        newPossibleMove.push(piece.currentPos[i] - move[i]);
+                    }
+                    if (this.isInsideBoard(newPossibleMove)){
+                        if (this.isCapturePiece(newPossibleMove, opponentNumber)) {
+                            possibleMoves.push(newPossibleMove);
+                        }
+                    }
+                    
+                })
+            })
+        }
         piece.possibleMoves = possibleMoves;
     },
 
     movePiece(piece, position) {
-        console.log(piece)
-        console.log(position)
         const y = position[0];
         const x = position[1];
         const oldPosition = piece.currentPos;

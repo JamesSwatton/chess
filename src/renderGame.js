@@ -75,7 +75,6 @@ const RenderGame = {
     renderPath(piece) {
         const pathContainer = document.getElementById('path-container');
         pathContainer.innerHTML = '';
-        console.log(pathContainer);
         const paths = piece.possibleMoves;
         const currentPos = piece.currentPos;
         for (let i = 0; i < 8; i++) {
@@ -100,36 +99,6 @@ const RenderGame = {
         })
         return result;
     }
-
-
-        // for (let i = 0; i < 8; i++) {
-        //     for (let j = 0; j < 8; j++) {
-        //         // const pathGrid = document.createElement('div');
-        //         const elementId = `${i}-${j}`;
-        //         const gridElement = document.getElementById(elementId);
-        //         gridElement.classList.remove('circle');
-        //         gridElement.classList.remove('highlighted');
-        //     }
-        // }
-        // const pieceGridPosId = `${piece.currentPos[0]}-${piece.currentPos[1]}`;
-        // const pieceElement = document.getElementById(pieceGridPosId);
-        // pieceElement.classList.add('highlighted');
-        
-        // // const highlightPlayer = document.createElement('div');
-        // // highlightPlayer.className = 'highlighted';
-        // // pieceElement.appendChild(highlightPlayer);
-
-
-
-        // piece.possibleMoves.forEach(move => {
-        //     const elementId = `${move[0]}-${move[1]}`;
-        //     const gridElement = document.getElementById(elementId);
-        //     gridElement.classList.add('circle');
-        //     // const circle = document.createElement('div');
-        //     // circle.className = 'circle';
-
-        //     // gridElement.appendChild(circle);
-        // })
     }
 
 }
