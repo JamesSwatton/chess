@@ -15,6 +15,7 @@ const Board = {
         "pppppppp",
         "rkbqKbkr",
     ],
+    checkedPlayer = '',
 
     setupBoard() {
         for (let y = 0; y < 8; y++) {
@@ -38,6 +39,9 @@ const Board = {
                         player = 1;
                     }
                     const piece = factoryPiece(player, colour, type, [y, x]);
+                    if(type === 'K'){
+                        piece.check = false
+                    }
                     this.pieces[y].push(piece);
                 }
             }
@@ -133,6 +137,10 @@ const Board = {
                             possibleMoves.push(newPossibleMove);
                         } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && !isPawn) {
                             possibleMoves.push(newPossibleMove);
+                            if(this.isKing(newPossibleMove)){
+                                this.setKingCheck(newPossibleMove)
+                                this.checkedPlayer = opponentNumber
+                            }
                             pathObstruction = true;
                         } else {
                             pathObstruction = true;
@@ -155,6 +163,9 @@ const Board = {
                     if (this.isInsideBoard(newPossibleMove)){
                         if (this.isCapturePiece(newPossibleMove, opponentNumber)) {
                             possibleMoves.push(newPossibleMove);
+                            if(this.isKing(newPossibleMove)){
+                                this.setKingCheck(newPossibleMove)
+                            }
                         }
                     }
                     
@@ -162,6 +173,17 @@ const Board = {
             })
         }
         piece.possibleMoves = possibleMoves;
+    },
+
+    isKing(move) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].type === 'K');
+    },
+    setKingCheck(move){
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].check = true);
     },
 
     movePiece(piece, position) {

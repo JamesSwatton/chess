@@ -72,34 +72,43 @@ const RenderGame = {
         }
     },
 
-    renderPath(piece) {
+    renderPath(piece, pieces) {
         const pathContainer = document.getElementById('path-container');
         pathContainer.innerHTML = '';
         const paths = piece.possibleMoves;
         const currentPos = piece.currentPos;
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
+                let currentPiece = pieces[i][j]
                 let pathGrid = document.createElement('div');
+                if(isInCheck(currentPiece)){
+                    pathGrid.classList.add('check')
+                }
                 if (checkForMatchingMovePos([i, j], paths)) {
                     pathGrid.classList.add('circle');
-                } else if (checkForMatchingMovePos([i, j], [currentPos])){
+                } else if (checkForMatchingMovePos([i, j], [currentPos])) {
                     pathGrid.classList.add('highlighted');
                 }
-                pathContainer.appendChild(pathGrid);     
+                pathContainer.appendChild(pathGrid);
             }
         }
 
         function checkForMatchingMovePos(position, moveArr) {
-        let result = false;
-        moveArr.forEach(move => {
-            if (move[0] === position[0]
-                && move[1] === position[1]) {
-                result = true;
-            }
-        })
-        return result;
-    }
-    }
+            let result = false;
+            moveArr.forEach(move => {
+                if (move[0] === position[0] &&
+                    move[1] === position[1]) {
+                    result = true;
+                }
+            })
+            return result;
+        }
+
+        function isInCheck(piece) {
+            return (piece.check === true)
+        }
+    },
+
 
 }
 
