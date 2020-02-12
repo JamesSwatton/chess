@@ -5,6 +5,7 @@ const factoryPiece = require('./factoryPiece');
 document.addEventListener("DOMContentLoaded", () => {
     let selectedPiece;
     let selectedMovePos;
+    const opponentNumber = 2;
 
     board.setupBoard();
     renderGame.renderCheckedBoard();
@@ -17,10 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = clickPosition[1]
         const currentSelectedPosition = board.pieces[y][x]
 
-        if (currentSelectedPosition.type !== 'blank') {
+        if (currentSelectedPosition.type !== 'blank' && currentSelectedPosition.player !== opponentNumber) {
             selectedPiece = currentSelectedPosition;
 
-            board.calcMoves(selectedPiece)
+            board.calcMoves(selectedPiece, opponentNumber)
             renderGame.renderPath(selectedPiece);
         } else {
             if (selectedPiece) {

@@ -21,7 +21,9 @@ const Board = {
             this.pieces[y] = [];
             for (let x = 0; x < 8; x++) {
                 if (this.boardTemplate[y][x] === '0') {
-                    const blank = {type: 'blank'};
+                    const blank = {
+                        type: 'blank'
+                    };
                     this.pieces[y].push(blank);
                 } else {
                     let colour;
@@ -39,7 +41,7 @@ const Board = {
                     this.pieces[y].push(piece);
                 }
             }
-        }    
+        }
     },
 
     setupTestBoard(board) {
@@ -47,7 +49,9 @@ const Board = {
             this.pieces[y] = [];
             for (let x = 0; x < 8; x++) {
                 if (board[y][x] === '0') {
-                    const blank = {type: 'blank'};
+                    const blank = {
+                        type: 'blank'
+                    };
                     this.pieces[y].push(blank);
                 } else {
                     let colour;
@@ -65,7 +69,7 @@ const Board = {
                     this.pieces[y].push(piece);
                 }
             }
-        }    
+        }
     },
 
     isPawnStart(pawn) {
@@ -75,9 +79,9 @@ const Board = {
     getMoves(piece) {
         if (piece.type === 'p') {
             if (this.isPawnStart(piece)) {
-                return pieceMoves[piece.type][piece.colour].moves; 
+                return pieceMoves[piece.type][piece.colour].moves;
             } else {
-                return [pieceMoves[piece.type][piece.colour].moves[0].slice(0, 1)]; 
+                return [pieceMoves[piece.type][piece.colour].moves[0].slice(0, 1)];
             }
         }
         return pieceMoves[piece.type];
@@ -94,7 +98,13 @@ const Board = {
         return (this.pieces[y][x].type === 'blank');
     },
 
-    calcMoves(piece) {
+    isCapturePiece(move, opponentNumber) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].player === opponentNumber)
+    },
+
+    calcMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
         const allPaths = this.getMoves(piece);
         console.log('paths', allPaths);
@@ -105,7 +115,7 @@ const Board = {
         allPaths.forEach(path => {
             console.log('path', path);
             // iterate through all moves in piece
-                let pathObstruction = false;
+            let pathObstruction = false;
 
             path.forEach(move => {
                 console.log('move', move);
@@ -116,9 +126,13 @@ const Board = {
                         newPossibleMove.push(piece.currentPos[i] - move[i]);
                     }
                     if (this.isInsideBoard(newPossibleMove)) {
+
                         if (this.isEmptyGridPos(newPossibleMove)) {
                             // add newMove to possibleMoves
                             possibleMoves.push(newPossibleMove);
+                        } else if(this.isCapturePiece(newPossibleMove, opponentNumber)) {
+                            possibleMoves.push(newPossibleMove);
+                            pathObstruction = true;
                         } else {
                             pathObstruction = true;
                         }
@@ -142,7 +156,9 @@ const Board = {
         piece.currentPos = [y, x];
 
         this.pieces[y][x] = piece;
-        this.pieces[oldPosition[0]][oldPosition[1]] = {type: 'blank'};
+        this.pieces[oldPosition[0]][oldPosition[1]] = {
+            type: 'blank'
+        };
     },
 
     clearAllPossibleMoves() {
@@ -152,7 +168,9 @@ const Board = {
             }
         }
     }
-   
+
+
+
 }
 
 module.exports = Board;
