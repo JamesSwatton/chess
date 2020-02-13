@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector('#get').addEventListener('click', event => {
         console.log('pressed')
-        fetch('http://localhost:3000/test')
+        fetch('http://localhost:3000/board')
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -24,14 +24,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.querySelector('#send').addEventListener('click', event => {
-        const testBoard = board.pieces;
-        fetch('http://localhost:3000/test', {
+        const newBoard = board.pieces;
+        fetch('http://localhost:3000/board', {
             method: 'POST',
-            body: JSON.stringify(testBoard),
+            body: JSON.stringify(newBoard),
             headers: { 
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
+                console.log('yoyoyoyoyo')
             if (response.ok) {
                 return response.json();
             }
