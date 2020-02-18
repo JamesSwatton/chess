@@ -1,24 +1,17 @@
 const board = require('./board');
+const game = require('./game');
 const renderGame = require('./renderGame')
 const factoryPiece = require('./factoryPiece');
 
 document.addEventListener("DOMContentLoaded", () => {
     let selectedPiece;
-    let selectedMovePos;
-    let opponentNumber = 2;
-    let player1 = {
-        number: 1,
-        inCheck: false
-    };
-    let player2 = {
-        number: 2,
-        inCheck: false
-    };
+    console.log(game);
 
-
+    // setup game
     board.setupBoard();
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
+    board.calcAllMoves(game.activePlayer, game.opponent)
 
     document.getElementById('piece-container').addEventListener('click', event => {
         const clickPositionString = event.target.id.split('-')
@@ -27,48 +20,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = clickPosition[1]
         const currentSelectedPosition = board.pieces[y][x]
         console.log(currentSelectedPosition)
+        console.log('active player: ', game.activePlayer);
 
-        if (currentSelectedPosition.type !== 'blank' && currentSelectedPosition.player !== opponentNumber) {
+
+        if (currentSelectedPosition.type !== 'blank' && currentSelectedPosition.player !== game.opponent) {
             selectedPiece = currentSelectedPosition;
 
-            board.calcMoves(selectedPiece, opponentNumber)
             renderGame.renderPath(selectedPiece, board.pieces);
         } else {
             if (selectedPiece) {
                 if (checkForMatchingMovePos(clickPosition, selectedPiece)) {
                     board.movePiece(selectedPiece, clickPosition);
-                    board.calcMoves(selectedPiece, opponentNumber) //calculating again to check for king in check
+                    board.calcAllMoves(game.activePlayer, game.opponent) //calculating again to check for king in check
                     board.clearAllPossibleMoves();
-                    // filteredOpponentPieces().forEach(piece => {
-
-                    //     board.checkedPlayer = '';
-                    //     board.calcMoves(piece, oppositePlayer())
-                    // });
                     renderGame.renderPath(selectedPiece, board.pieces); // renders to clear previous piece path
                     renderGame.renderPieces(board.pieces);
-                    swapOpponent();
+                    game.swapActiveAndOpponent();
+                    board.calcAllMoves(game.activePlayer, game.opponent)
                 }
             }
             selectedPiece = '';
         };
     });
-
-    // function oppositePlayer(){
-    //     return opponentNumber === 1 ? 2 : 1
-    // }
-
-    // function filteredOpponentPieces() {
-    //     let filteredPieces = []
-    //     for (let i = 0; i < 8; i++) {
-    //         for (let j = 0; j < 8; j++) {
-    //             if(board.pieces[i][j].player === opponentNumber){
-    //                 filteredPieces.push(board.pieces[i][j])
-    //             }
-    //         }
-    //     }
-    //     return filteredPieces
-
-    // }
 
     function checkForMatchingMovePos(position, piece) {
         let result = false;
@@ -81,12 +54,5 @@ document.addEventListener("DOMContentLoaded", () => {
         return result;
     }
 
-    function swapOpponent() {
-        if (opponentNumber === 2) {
-            opponentNumber = 1
-        } else {
-            opponentNumber = 2
-        }
-    }
-
+    
 });

@@ -15,7 +15,7 @@ const Board = {
         "pppppppp",
         "rkbqKbkr",
     ],
-    checkedPlayer = '',
+    checkedPlayer: '',
 
     setupBoard() {
         for (let y = 0; y < 8; y++) {
@@ -76,41 +76,18 @@ const Board = {
         }
     },
 
-    isPawnStart(pawn) {
-        return (pawn.currentPos[0] === 6 || pawn.currentPos[0] === 1);
-    },
-
-    getMoves(piece) {
-        if (piece.type === 'p') {
-            if (this.isPawnStart(piece)) {
-                return pieceMoves[piece.type][piece.colour];
-            } else {
-                return {
-                    paths: [pieceMoves[piece.type][piece.colour].paths[0].slice(0, 1)],
-                    capturePaths: pieceMoves[piece.type][piece.colour].capturePaths
+    calcAllMoves(activePlayer, opponent) {
+        console.log('hello')
+        this.pieces.forEach(row => {
+            row.forEach(piece => {
+                if (piece.player === activePlayer) {
+                    this.calcPieceMoves(piece, opponent);
                 }
-            }
-        }
-        return pieceMoves[piece.type];
+            })
+        })
     },
 
-    isInsideBoard(move) {
-        return move.every(pos => (pos >= 0 && pos <= 7));
-    },
-
-    isEmptyGridPos(move) {
-        const y = move[0];
-        const x = move[1];
-        return (this.pieces[y][x].type === 'blank');
-    },
-
-    isCapturePiece(move, opponentNumber) {
-        const y = move[0];
-        const x = move[1];
-        return (this.pieces[y][x].player === opponentNumber)
-    },
-
-    calcMoves(piece, opponentNumber) {
+    calcPieceMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
         const allPaths = this.getMoves(piece).paths;
         const capturePaths = this.getMoves(piece).capturePaths;
@@ -154,7 +131,7 @@ const Board = {
 
         if (capturePaths) {
             capturePaths.forEach(path => {
-                
+
                 path.forEach(move => {
                     const newPossibleMove = [];
                     for (let i = 0; i < 2; i++) {
@@ -168,7 +145,7 @@ const Board = {
                             }
                         }
                     }
-                    
+
                 })
             })
         }
@@ -180,6 +157,7 @@ const Board = {
         const x = move[1];
         return (this.pieces[y][x].type === 'K');
     },
+
     setKingCheck(move){
         const y = move[0];
         const x = move[1];
@@ -204,7 +182,43 @@ const Board = {
                 this.pieces[i][j].possibleMoves = [];
             }
         }
-    }
+    },
+
+    isPawnStart(pawn) {
+        return (pawn.currentPos[0] === 6 || pawn.currentPos[0] === 1);
+    },
+
+    getMoves(piece) {
+        if (piece.type === 'p') {
+            if (this.isPawnStart(piece)) {
+                return pieceMoves[piece.type][piece.colour];
+            } else {
+                return {
+                    paths: [pieceMoves[piece.type][piece.colour].paths[0].slice(0, 1)],
+                    capturePaths: pieceMoves[piece.type][piece.colour].capturePaths
+                }
+            }
+        }
+        return pieceMoves[piece.type];
+    },
+
+    isInsideBoard(move) {
+        return move.every(pos => (pos >= 0 && pos <= 7));
+    },
+
+    isEmptyGridPos(move) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].type === 'blank');
+    },
+
+    isCapturePiece(move, opponentNumber) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].player === opponentNumber)
+    },
+
+
 
 
 
