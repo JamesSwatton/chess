@@ -18,14 +18,14 @@ const Board = {
     kingPosition: [],
     checkedPlayer: '',
     checkedPath: [],
-    attackingPieceLocation: [],
+    attackingPiecePosition: [],
 
     getCheckData() {
         if (this.cheeckedPlayer) {
             return {
                 checkedPlayer: this.checkedPlayer,
                 checkedPath: this.checkedPath,
-                attackingPieceLocation: this.attackingPieceLocation
+                attackingPiecePosition: this.attackingPiecePosition
             }
         } else {
             return null;
@@ -105,7 +105,7 @@ const Board = {
 
     calcPieceMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
-        const blockingMoves = [];
+        const blockingAndAttackingMoves= [];
         const allPaths = this.getMoves(piece).paths;
         const capturePaths = this.getMoves(piece).capturePaths;
         const isPawn = piece.type === 'p';
@@ -127,12 +127,16 @@ const Board = {
                     if (this.isInsideBoard(newPossibleMove)) {
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
-                            if (this.canStopAttack(piece, newPossibleMove)) {
-                                blockingMoves.push(newPossibleMove);
+                            if (this.canStopAttack(piece, newPossibleMove, this.checkedPath)) {
+                                blockingAndAttackingMoves.push(newPossibleMove);
                             }
                             // add newMove to possibleMoves
                             possibleMoves.push(newPossibleMove);
+                            // console.log(this.att);
                         } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && !isPawn) {
+                            if (this.canStopAttack(piece, newPossibleMove, this.attackingPiecePosition)) {
+                                blockingAndAttackingMoves.push(newPossibleMove);
+                            }
                             possibleMoves.push(newPossibleMove);
                             if(this.isKing(newPossibleMove)){
                                 this.kingPosition = newPossibleMove;
@@ -141,7 +145,7 @@ const Board = {
                                 //taking the path that put king in check and
                                 //filtering moves to king.
                                 this.checkedPlayer = opponentNumber;
-                                this.attackingPiecePosition = piece.currentPos
+                                this.attackingPiecePosition = [piece.currentPos]
                                 this.checkedPath = path.map(move => {
                                     let pathMove = [];
                                     for (let i = 0; i < 2; i++) {
@@ -181,17 +185,16 @@ const Board = {
                 })
             })
         }
-        // console.log(`blocking moves: ${piece.type}`, blockingMoves);
-        if (blockingMoves.length > 0) {
-            piece.possibleMoves = blockingMoves;
+        if (blockingAndAttackingMoves.length > 0) {
+            piece.possibleMoves =blockingAndAttackingMoves;
         } else {
             piece.possibleMoves = possibleMoves;
         }
     },
 
-    canStopAttack(piece, position) {
+    canStopAttack(piece, position, array) {
         let result = false;
-        this.checkedPath.forEach(move => {
+        array.forEach(move => {
             if (move[0] === position[0] &&
                 move[1] === position[1]) {
                 piece.canStopAttack = true;
