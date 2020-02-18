@@ -16,6 +16,7 @@ const Board = {
         "rkbqKbkr",
     ],
     checkedPlayer: '',
+    checkedPath: [],
 
     setupBoard() {
         for (let y = 0; y < 8; y++) {
@@ -116,7 +117,18 @@ const Board = {
                             possibleMoves.push(newPossibleMove);
                             if(this.isKing(newPossibleMove)){
                                 this.setKingCheck(newPossibleMove)
-                                this.checkedPlayer = opponentNumber
+                                //TODO think about making this it's own function
+                                //taking the path that put king in check and
+                                //filtering moves to king.
+                                this.checkedPlayer = opponentNumber;
+                                this.checkedPath = path.map(move => {
+                                    let pathMove = [];
+                                    for (let i = 0; i < 2; i++) {
+                                        pathMove.push(piece.currentPos[i] - move[i]);
+                                    }
+                                        return pathMove;
+                                }).filter(move => move.every(el => el >= 0));
+                                console.log(this.checkedPath);
                             }
                             pathObstruction = true;
                         } else {
@@ -158,7 +170,7 @@ const Board = {
         return (this.pieces[y][x].type === 'K');
     },
 
-    setKingCheck(move){
+    setKingCheck(move){ // this is to for rendering purposes
         const y = move[0];
         const x = move[1];
         return (this.pieces[y][x].check = true);
