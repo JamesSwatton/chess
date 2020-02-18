@@ -4,7 +4,7 @@ function factoryPiece(player, colour, type, currentPos) {
         colour,
         type,
         currentPos,
-        possibleMoves: []
+        possibleMoves: [],
     }
 }
 

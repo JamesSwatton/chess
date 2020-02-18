@@ -22,8 +22,31 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(currentSelectedPosition)
         console.log('active player: ', game.activePlayer);
 
-
-        if (currentSelectedPosition.type !== 'blank' && currentSelectedPosition.player !== game.opponent) {
+        //check if player is in check and only allow movement of pieces that can
+        //block / attack or excape
+        if (board.checkedPlayer) {
+            if (currentSelectedPosition.canStopAttack) {
+                selectedPiece = currentSelectedPosition;
+                renderGame.renderPath(selectedPiece, board.pieces);
+            } else {
+                if (selectedPiece) {
+                    if (checkForMatchingMovePos(clickPosition, selectedPiece)) {
+                        board.movePiece(selectedPiece, clickPosition);
+                        board.calcAllMoves(game.activePlayer, game.opponent) //calculating again to check for king in check
+                        board.clearAllPossibleMoves();
+                        board.checkedPlayer = '';
+                        console.log(board.kingPosition);
+                        board.setKingCheck(board.kingPosition);
+                        renderGame.renderPath(selectedPiece, board.pieces); // renders to clear previous piece path
+                        renderGame.renderPieces(board.pieces);
+                        game.swapActiveAndOpponent();
+                        board.calcAllMoves(game.activePlayer, game.opponent)
+                        renderGame.renderPath(selectedPiece, board.pieces);
+                    }
+                }
+                selectedPiece = '';
+            }
+        } else if (currentSelectedPosition.type !== 'blank' && currentSelectedPosition.player === game.activePlayer) {
             selectedPiece = currentSelectedPosition;
 
             renderGame.renderPath(selectedPiece, board.pieces);
@@ -37,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     renderGame.renderPieces(board.pieces);
                     game.swapActiveAndOpponent();
                     board.calcAllMoves(game.activePlayer, game.opponent)
+                    renderGame.renderPath(selectedPiece, board.pieces);
                 }
             }
             selectedPiece = '';

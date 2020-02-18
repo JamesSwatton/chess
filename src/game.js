@@ -6,7 +6,7 @@ const Game = {
         paths: {
             attacking: [],
             escape: []
-        }
+         }
     },
     checkmate: false,
     draw: false,

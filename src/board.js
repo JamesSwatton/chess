@@ -15,8 +15,22 @@ const Board = {
         "pppppppp",
         "rkbqKbkr",
     ],
+    kingPosition: [],
     checkedPlayer: '',
     checkedPath: [],
+    attackingPieceLocation: [],
+
+    getCheckData() {
+        if (this.cheeckedPlayer) {
+            return {
+                checkedPlayer: this.checkedPlayer,
+                checkedPath: this.checkedPath,
+                attackingPieceLocation: this.attackingPieceLocation
+            }
+        } else {
+            return null;
+        }
+    },
 
     setupBoard() {
         for (let y = 0; y < 8; y++) {
@@ -42,6 +56,8 @@ const Board = {
                     const piece = factoryPiece(player, colour, type, [y, x]);
                     if(type === 'K'){
                         piece.check = false
+                    } else {
+                        piece.canStopAttack = false;
                     }
                     this.pieces[y].push(piece);
                 }
@@ -78,7 +94,6 @@ const Board = {
     },
 
     calcAllMoves(activePlayer, opponent) {
-        console.log('hello')
         this.pieces.forEach(row => {
             row.forEach(piece => {
                 if (piece.player === activePlayer) {
@@ -90,6 +105,7 @@ const Board = {
 
     calcPieceMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
+        const blockingMoves = [];
         const allPaths = this.getMoves(piece).paths;
         const capturePaths = this.getMoves(piece).capturePaths;
         const isPawn = piece.type === 'p';
@@ -111,16 +127,21 @@ const Board = {
                     if (this.isInsideBoard(newPossibleMove)) {
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
+                            if (this.canStopAttack(piece, newPossibleMove)) {
+                                blockingMoves.push(newPossibleMove);
+                            }
                             // add newMove to possibleMoves
                             possibleMoves.push(newPossibleMove);
                         } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && !isPawn) {
                             possibleMoves.push(newPossibleMove);
                             if(this.isKing(newPossibleMove)){
+                                this.kingPosition = newPossibleMove;
                                 this.setKingCheck(newPossibleMove)
                                 //TODO think about making this it's own function
                                 //taking the path that put king in check and
                                 //filtering moves to king.
                                 this.checkedPlayer = opponentNumber;
+                                this.attackingPiecePosition = piece.currentPos
                                 this.checkedPath = path.map(move => {
                                     let pathMove = [];
                                     for (let i = 0; i < 2; i++) {
@@ -128,7 +149,6 @@ const Board = {
                                     }
                                         return pathMove;
                                 }).filter(move => move.every(el => el >= 0));
-                                console.log(this.checkedPath);
                             }
                             pathObstruction = true;
                         } else {
@@ -161,7 +181,25 @@ const Board = {
                 })
             })
         }
-        piece.possibleMoves = possibleMoves;
+        // console.log(`blocking moves: ${piece.type}`, blockingMoves);
+        if (blockingMoves.length > 0) {
+            piece.possibleMoves = blockingMoves;
+        } else {
+            piece.possibleMoves = possibleMoves;
+        }
+    },
+
+    canStopAttack(piece, position) {
+        let result = false;
+        this.checkedPath.forEach(move => {
+            if (move[0] === position[0] &&
+                move[1] === position[1]) {
+                piece.canStopAttack = true;
+                result = true;
+            } else {
+            }
+        })
+        return result;
     },
 
     isKing(move) {
@@ -171,9 +209,15 @@ const Board = {
     },
 
     setKingCheck(move){ // this is to for rendering purposes
+        console.log('inside set check:', move);
         const y = move[0];
         const x = move[1];
-        return (this.pieces[y][x].check = true);
+        if (this.pieces[y][x].check) {
+            console.log('should be false');
+            this.pieces[y][x].check = false;
+        } else { 
+            this.pieces[y][x].check = true;     
+        }
     },
 
     movePiece(piece, position) {
@@ -192,6 +236,7 @@ const Board = {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
                 this.pieces[i][j].possibleMoves = [];
+                this.pieces[i][j].canStopAttack = false;
             }
         }
     },
