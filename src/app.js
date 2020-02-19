@@ -1,7 +1,6 @@
-const board = require('./board');
-const game = require('./game');
-const renderGame = require('./renderGame')
-const factoryPiece = require('./factoryPiece');
+// const board = require('./board');
+// const game = require('./game');
+// const renderGame = require('./renderGame')
 
 document.addEventListener("DOMContentLoaded", () => {
     let selectedPiece;

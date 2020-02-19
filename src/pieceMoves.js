@@ -246,4 +246,4 @@ const pieceMoves = {
     }
 }
 
-module.exports = pieceMoves;
+// export default pieceMoves;

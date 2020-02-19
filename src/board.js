@@ -1,8 +1,8 @@
-const pieceMoves = require('./pieceMoves');
-const factoryPiece = require('./factoryPiece')
+// const pieceMoves = require('./pieceMoves');
+// const factoryPiece = require('./factoryPiece')
 
 
-const Board = {
+const board = {
     pieces: [],
 
     boardTemplate: [
@@ -284,4 +284,4 @@ const Board = {
 
 }
 
-module.exports = Board;
+// export default board;

@@ -1,4 +1,4 @@
-const Game = {
+const game = {
     activePlayer: 1,
     opponent: 2,
     check: {
@@ -23,4 +23,4 @@ const Game = {
 
 }
 
-module.exports = Game;
+// export default Game;

@@ -1,4 +1,4 @@
-const RenderGame = {
+const renderGame = {
 
 
     boardTemplate: [
@@ -112,4 +112,4 @@ const RenderGame = {
 
 }
 
-module.exports = RenderGame;
+// module.exports = RenderGame;
