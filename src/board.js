@@ -284,4 +284,4 @@ const board = {
 
 }
 
-// export default board;
+// module.exports = board;

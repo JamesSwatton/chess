@@ -23,4 +23,4 @@ const game = {
 
 }
 
-// export default Game;
+// module.exports = game;

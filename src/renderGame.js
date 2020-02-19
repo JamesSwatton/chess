@@ -112,4 +112,4 @@ const renderGame = {
 
 }
 
-// module.exports = RenderGame;
+// module.exports = renderGame;
