@@ -1,4 +1,5 @@
 const game = {
+    board: board,
     activePlayer: 1,
     opponent: 2,
     check: {
