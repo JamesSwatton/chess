@@ -54,6 +54,7 @@ const board = {
                         player = 1;
                     }
                     const piece = factoryPiece(player, colour, type, [y, x]);
+                    piece.getAllMoves(pieceMoves);
                     if(type === 'K'){
                         piece.check = false
                     } else {
@@ -63,6 +64,7 @@ const board = {
                 }
             }
         }
+        // console.log(this.pieces);
     },
 
     setupTestBoard(board) {
@@ -105,7 +107,7 @@ const board = {
 
     calcPieceMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
-        const blockingAndAttackingMoves= [];
+        const blockingAndAttackingMoves = [];
         const allPaths = this.getMoves(piece).paths;
         const capturePaths = this.getMoves(piece).capturePaths;
         const isPawn = piece.type === 'p';
@@ -244,23 +246,6 @@ const board = {
         }
     },
 
-    isPawnStart(pawn) {
-        return (pawn.currentPos[0] === 6 || pawn.currentPos[0] === 1);
-    },
-
-    getMoves(piece) {
-        if (piece.type === 'p') {
-            if (this.isPawnStart(piece)) {
-                return pieceMoves[piece.type][piece.colour];
-            } else {
-                return {
-                    paths: [pieceMoves[piece.type][piece.colour].paths[0].slice(0, 1)],
-                    capturePaths: pieceMoves[piece.type][piece.colour].capturePaths
-                }
-            }
-        }
-        return pieceMoves[piece.type];
-    },
 
     isInsideBoard(move) {
         return move.every(pos => (pos >= 0 && pos <= 7));
