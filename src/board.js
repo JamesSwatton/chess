@@ -167,9 +167,7 @@ const board = {
                                     }
                                         return pathMove;
                                 }).filter(move => move.every(el => el >= 0));
-                            } else {
-                                this.check.kingPosition = [];
-                            }
+                            } 
                             pathObstruction = true;
                         } else {
                             pathObstruction = true;
@@ -201,6 +199,7 @@ const board = {
             })
         }
         // IF ANYMOVES IN BLOACKING AND ATTACKING MOVES ONLY USE THEM
+        console.log('blocking:', blockingAndAttackingMoves.length);
         if (blockingAndAttackingMoves.length > 0) {
             piece.possibleMoves = blockingAndAttackingMoves;
         } else {

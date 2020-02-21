@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         //check if player is in check and only allow movement of pieces that can
         //block / attack or excape
-        if (game.board.checkedPlayer) {
+        if (game.board.check.player) {
             if (currentSelectedPosition.canStopAttack) {
                 selectedPiece = currentSelectedPosition;
                 renderGame.renderPath(selectedPiece, game.board.pieces);
@@ -33,9 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         game.board.movePiece(selectedPiece, clickPosition);
                         game.board.calcAllMoves(game.activePlayer, game.opponent) //calculating again to check for king in check
                         game.board.clearAllPossibleMoves();
-                        game.board.checkedPlayer = '';
-                        console.log(game.board.kingPosition);
-                        game.board.setKingCheck(game.board.kingPosition);
+                        game.board.check.player = '';
+                        game.board.setKingCheck(game.board.check.kingPosition);
                         renderGame.renderPath(selectedPiece, game.board.pieces); // renders to clear previous piece path
                         renderGame.renderPieces(game.board.pieces);
                         game.swapActiveAndOpponent();
