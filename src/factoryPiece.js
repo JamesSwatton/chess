@@ -12,7 +12,7 @@ function factoryPiece(player, colour, type, currentPos) {
                     return this._movePaths;
                 } else {
                     return {
-                        paths: this._movePaths.paths[0].slice(0, 1),
+                        paths: [this._movePaths.paths[0].slice(0, 1)],
                         capturePaths: this._movePaths.capturePaths
                     }
                 }

@@ -15,10 +15,13 @@ const board = {
         "pppppppp",
         "rkbqKbkr",
     ],
-    kingPosition: [],
-    checkedPlayer: '',
-    checkedPath: [],
-    attackingPiecePosition: [],
+
+    check: {
+        kingPosition: [],
+        player: '',
+        checkedPath: [],
+        attackingPiecePosition: [],
+    },
 
     getCheckData() {
         if (this.cheeckedPlayer) {
@@ -64,8 +67,6 @@ const board = {
                         piece.canStopAttack = false;
                     }
                     this.pieces[y].push(piece);
-
-                    console.log(piece.movePaths);
                 }
             }
         }
@@ -114,10 +115,9 @@ const board = {
         const allPaths = piece.movePaths.paths;
         const capturePaths = piece.movePaths.capturePaths;
 
-        const blockingAndAttackingMoves = [];
-
         // ARRAY TO GATHER NEW MOVES
-        let possibleMoves = [];
+        const possibleMoves = [];
+        const blockingAndAttackingMoves = [];
 
         allPaths.forEach(path => {
 
@@ -128,45 +128,47 @@ const board = {
                 if (!pathObstruction) {
 
                     const newPossibleMove = [];
+                    let pieceAtMovePos;
 
                     for (let i = 0; i < 2; i++) {
-
                         // ADD NEW POSITION TO NEWMOVE
                         newPossibleMove.push(piece.currentPos[i] - move[i]);
                     }
+
+
                     if (this.isInsideBoard(newPossibleMove)) {
+                        pieceAtMovePos = this.pieces[newPossibleMove[0]][newPossibleMove[1]]
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
 
                             // ADD MOVE IF CAN STOP CHECK
-                            if (this.canStopAttack(piece, newPossibleMove, this.checkedPath)) {
+                            if (this.canStopAttack(piece, newPossibleMove, this.check.checkedPath)) {
                                 blockingAndAttackingMoves.push(newPossibleMove);
                             }
 
                             possibleMoves.push(newPossibleMove); // ADD NEW  MOVE TO POSSIBLEMOVES
 
                         } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && piece.type !== 'p') {
-                            if (this.canStopAttack(piece, newPossibleMove, this.attackingPiecePosition)) {
+                            if (this.canStopAttack(piece, newPossibleMove, this.check.attackingPiecePosition)) {
                                 blockingAndAttackingMoves.push(newPossibleMove);
                             }
 
                             possibleMoves.push(newPossibleMove); // ADD NEW  MOVE TO POSSIBLEMOVES
 
-                            if(this.isKing(newPossibleMove)){
-                                this.kingPosition = newPossibleMove;
+                            if(pieceAtMovePos.type === 'K') {
+                                this.check.kingPosition = newPossibleMove;
                                 this.setKingCheck(newPossibleMove)
-                                //TODO think about making this it's own function
-                                //taking the path that put king in check and
-                                //filtering moves to king.
-                                this.checkedPlayer = opponentNumber;
-                                this.attackingPiecePosition = [piece.currentPos]
-                                this.checkedPath = path.map(move => {
+                                this.check.player = opponentNumber;
+                                this.check.attackingPiecePosition = [piece.currentPos]
+                                this.check.checkedPath = path.map(move => {
                                     let pathMove = [];
                                     for (let i = 0; i < 2; i++) {
                                         pathMove.push(piece.currentPos[i] - move[i]);
                                     }
                                         return pathMove;
                                 }).filter(move => move.every(el => el >= 0));
+                            } else {
+                                this.check.kingPosition = [];
                             }
                             pathObstruction = true;
                         } else {
@@ -178,7 +180,6 @@ const board = {
                 }
             });
         })
-
         // ONLY USED FOR CALCULATING PAWN CAPTURE MOVES 
         if (capturePaths) {
             capturePaths.forEach(path => {
@@ -191,7 +192,7 @@ const board = {
                     if (this.isInsideBoard(newPossibleMove)){
                         if (this.isCapturePiece(newPossibleMove, opponentNumber)) {
                             possibleMoves.push(newPossibleMove);
-                            if(this.isKing(newPossibleMove)){
+                            if(pieceAtMovePos.type === 'K'){
                                 this.setKingCheck(newPossibleMove)
                             }
                         }
@@ -199,10 +200,9 @@ const board = {
                 })
             })
         }
-
         // IF ANYMOVES IN BLOACKING AND ATTACKING MOVES ONLY USE THEM
         if (blockingAndAttackingMoves.length > 0) {
-            piece.possibleMoves =blockingAndAttackingMoves;
+            piece.possibleMoves = blockingAndAttackingMoves;
         } else {
             piece.possibleMoves = possibleMoves;
         }
@@ -221,11 +221,11 @@ const board = {
         return result;
     },
 
-    isKing(move) {
-        const y = move[0];
-        const x = move[1];
-        return (this.pieces[y][x].type === 'K');
-    },
+    // isKing(move) {
+    //     const y = move[0];
+    //     const x = move[1];
+    //     return (this.pieces[y][x].type === 'K');
+    // },
 
     setKingCheck(move){ // this is to for rendering purposes
         console.log('inside set check:', move);
@@ -260,7 +260,6 @@ const board = {
         }
     },
 
-
     isInsideBoard(move) {
         return move.every(pos => (pos >= 0 && pos <= 7));
     },
@@ -276,11 +275,6 @@ const board = {
         const x = move[1];
         return (this.pieces[y][x].player === opponentNumber)
     },
-
-
-
-
-
 }
 
 // module.exports = board;
