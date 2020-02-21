@@ -22,13 +22,11 @@ function factoryPiece(player, colour, type, currentPos) {
         },
 
         getAllMoves(pieceMoves) {
-            console.log(pieceMoves);
-            console.log(this.type, this.colour);
             if (this.type === 'p') {
                 this._movePaths = pieceMoves[this.type][this.colour];
             }
             else {
-                this.movePaths = pieceMoves[this.type];
+                this._movePaths = pieceMoves[this.type];
             }
         }
     }

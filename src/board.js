@@ -55,16 +55,20 @@ const board = {
                     }
                     const piece = factoryPiece(player, colour, type, [y, x]);
                     piece.getAllMoves(pieceMoves);
+
+                    // ADD PROPERTIES PROPERTIES FOR KING CHECK 
+                    // AND STOPPING KING FROM SUICIDE 
                     if(type === 'K'){
                         piece.check = false
                     } else {
                         piece.canStopAttack = false;
                     }
                     this.pieces[y].push(piece);
+
+                    console.log(piece.movePaths);
                 }
             }
         }
-        // console.log(this.pieces);
     },
 
     setupTestBoard(board) {
@@ -107,39 +111,47 @@ const board = {
 
     calcPieceMoves(piece, opponentNumber) {
         piece.possibleMoves = [];
-        const blockingAndAttackingMoves = [];
-        const allPaths = this.getMoves(piece).paths;
-        const capturePaths = this.getMoves(piece).capturePaths;
-        const isPawn = piece.type === 'p';
+        const allPaths = piece.movePaths.paths;
+        const capturePaths = piece.movePaths.capturePaths;
 
-        // array to gather new moves
+        const blockingAndAttackingMoves = [];
+
+        // ARRAY TO GATHER NEW MOVES
         let possibleMoves = [];
 
         allPaths.forEach(path => {
-            // iterate through all moves in piece
+
             let pathObstruction = false;
 
+            // ITERATE THROUGH ALL MOVES IN PIECE
             path.forEach(move => {
                 if (!pathObstruction) {
+
                     const newPossibleMove = [];
+
                     for (let i = 0; i < 2; i++) {
-                        // add new position to newMove
+
+                        // ADD NEW POSITION TO NEWMOVE
                         newPossibleMove.push(piece.currentPos[i] - move[i]);
                     }
                     if (this.isInsideBoard(newPossibleMove)) {
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
+
+                            // ADD MOVE IF CAN STOP CHECK
                             if (this.canStopAttack(piece, newPossibleMove, this.checkedPath)) {
                                 blockingAndAttackingMoves.push(newPossibleMove);
                             }
-                            // add newMove to possibleMoves
-                            possibleMoves.push(newPossibleMove);
-                            // console.log(this.att);
-                        } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && !isPawn) {
+
+                            possibleMoves.push(newPossibleMove); // ADD NEW  MOVE TO POSSIBLEMOVES
+
+                        } else if (this.isCapturePiece(newPossibleMove, opponentNumber) && piece.type !== 'p') {
                             if (this.canStopAttack(piece, newPossibleMove, this.attackingPiecePosition)) {
                                 blockingAndAttackingMoves.push(newPossibleMove);
                             }
-                            possibleMoves.push(newPossibleMove);
+
+                            possibleMoves.push(newPossibleMove); // ADD NEW  MOVE TO POSSIBLEMOVES
+
                             if(this.isKing(newPossibleMove)){
                                 this.kingPosition = newPossibleMove;
                                 this.setKingCheck(newPossibleMove)
@@ -167,6 +179,7 @@ const board = {
             });
         })
 
+        // ONLY USED FOR CALCULATING PAWN CAPTURE MOVES 
         if (capturePaths) {
             capturePaths.forEach(path => {
 
@@ -183,10 +196,11 @@ const board = {
                             }
                         }
                     }
-
                 })
             })
         }
+
+        // IF ANYMOVES IN BLOACKING AND ATTACKING MOVES ONLY USE THEM
         if (blockingAndAttackingMoves.length > 0) {
             piece.possibleMoves =blockingAndAttackingMoves;
         } else {
