@@ -128,7 +128,7 @@ const board = {
                 if (!pathObstruction) {
 
                     const newPossibleMove = [];
-                    let pieceAtMovePos;
+                    // let pieceAtMovePos;
 
                     for (let i = 0; i < 2; i++) {
                         // ADD NEW POSITION TO NEWMOVE
@@ -137,7 +137,7 @@ const board = {
 
 
                     if (this.isInsideBoard(newPossibleMove)) {
-                        pieceAtMovePos = this.pieces[newPossibleMove[0]][newPossibleMove[1]]
+                        // pieceAtMovePos = this.pieces[newPossibleMove[0]][newPossibleMove[1]]
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
 
@@ -155,7 +155,7 @@ const board = {
 
                             possibleMoves.push(newPossibleMove); // ADD NEW  MOVE TO POSSIBLEMOVES
 
-                            if(pieceAtMovePos.type === 'K') {
+                            if(this.isKing(newPossibleMove)) {
                                 this.check.kingPosition = newPossibleMove;
                                 this.setKingCheck(newPossibleMove)
                                 this.check.player = opponentNumber;
@@ -190,7 +190,7 @@ const board = {
                     if (this.isInsideBoard(newPossibleMove)){
                         if (this.isCapturePiece(newPossibleMove, opponentNumber)) {
                             possibleMoves.push(newPossibleMove);
-                            if(pieceAtMovePos.type === 'K'){
+                            if(this.isKing(newPossibleMove)){
                                 this.setKingCheck(newPossibleMove)
                             }
                         }
@@ -209,22 +209,24 @@ const board = {
 
     canStopAttack(piece, position, array) {
         let result = false;
-        array.forEach(move => {
-            if (move[0] === position[0] &&
-                move[1] === position[1]) {
-                piece.canStopAttack = true;
-                result = true;
-            } else {
-            }
-        })
+        if (this.check.player) {
+            array.forEach(move => {
+                if (move[0] === position[0] &&
+                    move[1] === position[1]) {
+                    piece.canStopAttack = true;
+                    result = true;
+                } else {
+                }
+            })
+        }
         return result;
     },
 
-    // isKing(move) {
-    //     const y = move[0];
-    //     const x = move[1];
-    //     return (this.pieces[y][x].type === 'K');
-    // },
+    isKing(move) {
+        const y = move[0];
+        const x = move[1];
+        return (this.pieces[y][x].type === 'K');
+    },
 
     setKingCheck(move){ // this is to for rendering purposes
         console.log('inside set check:', move);
@@ -253,8 +255,10 @@ const board = {
     clearAllPossibleMoves() {
         for (let i = 0; i < 8; i++) {
             for (let j = 0; j < 8; j++) {
-                this.pieces[i][j].possibleMoves = [];
-                this.pieces[i][j].canStopAttack = false;
+                const currentPiece = this.pieces[i][j];
+                currentPiece.possibleMoves = [];
+                if (currentPiece.type !== 'K')
+                currentPiece.canStopAttack = false;
             }
         }
     },
