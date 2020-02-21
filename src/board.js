@@ -128,7 +128,6 @@ const board = {
                 if (!pathObstruction) {
 
                     const newPossibleMove = [];
-                    // let pieceAtMovePos;
 
                     for (let i = 0; i < 2; i++) {
                         // ADD NEW POSITION TO NEWMOVE
@@ -137,7 +136,6 @@ const board = {
 
 
                     if (this.isInsideBoard(newPossibleMove)) {
-                        // pieceAtMovePos = this.pieces[newPossibleMove[0]][newPossibleMove[1]]
 
                         if (this.isEmptyGridPos(newPossibleMove)) {
 
