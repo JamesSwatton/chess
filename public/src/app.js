@@ -8,12 +8,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // setup game
     game.board.setupBoard();
+    postBoard(game.board.pieces);
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
     game.board.calcAllMoves(game.activePlayer, game.opponent)
 
-    document.querySelector('#get').addEventListener('click', event => {
-        console.log('pressed')
+    function cleanBoardForPosting(board) {
+        const boardCopy = board.slice(0, 9);
+        return boardCopy.map(row => {
+            return row.map(piece => {
+                return { 
+                    player: piece.player,
+                    type: piece.type
+                };
+            })
+        })
+    }
+
+    function getBoard() {
         fetch('http://localhost:3000/board')
             .then((response) => {
                 if (response.ok) {
@@ -22,25 +34,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }).then((jsonResponse) => {
                 console.log('test board response;', jsonResponse)
             });
-    });
+    }
 
-    document.querySelector('#send').addEventListener('click', event => {
-        const newBoard = board.pieces;
+    function postBoard(board) {
+        const newBoard = cleanBoardForPosting(board);
         fetch('http://localhost:3000/board', {
             method: 'POST',
-            body: JSON.stringify(newBoard),
-            headers: { 
+            body: JSON.stringify({ newBoard }),
+            headers: {
                 'Content-Type': 'application/json'
             }
         }).then((response) => {
-                console.log('yoyoyoyoyo')
             if (response.ok) {
                 return response.json();
             }
         }).then((jsonResponse) => {
             console.log('test board response;', jsonResponse)
+            console.log(board == jsonResponse);
         });
-    });
+    }
 
     document.getElementById('piece-container').addEventListener('click', event => {
         const clickPositionString = event.target.id.split('-')
@@ -64,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         game.board.calcAllMoves(game.activePlayer, game.opponent) //calculating again to check for king in check
                         game.board.clearAllPossibleMoves();
                         game.board.check.player = '';
+                        postBoard(board.pieces);
                         game.board.setKingCheck(game.board.check.kingPosition);
                         renderGame.renderPath(selectedPiece, game.board.pieces); // renders to clear previous piece path
                         renderGame.renderPieces(game.board.pieces);
@@ -84,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     game.board.movePiece(selectedPiece, clickPosition);
                     game.board.calcAllMoves(game.activePlayer, game.opponent) //calculating again to check for king in check
                     game.board.clearAllPossibleMoves();
+                    postBoard(board.pieces);
                     renderGame.renderPath(selectedPiece, game.board.pieces); // renders to clear previous piece path
                     renderGame.renderPieces(game.board.pieces);
                     game.swapActiveAndOpponent();
