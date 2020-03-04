@@ -12,6 +12,36 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGame.renderPieces(board.pieces);
     game.board.calcAllMoves(game.activePlayer, game.opponent)
 
+    document.querySelector('#get').addEventListener('click', event => {
+        console.log('pressed')
+        fetch('http://localhost:3000/board')
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+            }).then((jsonResponse) => {
+                console.log('test board response;', jsonResponse)
+            });
+    });
+
+    document.querySelector('#send').addEventListener('click', event => {
+        const newBoard = board.pieces;
+        fetch('http://localhost:3000/board', {
+            method: 'POST',
+            body: JSON.stringify(newBoard),
+            headers: { 
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+                console.log('yoyoyoyoyo')
+            if (response.ok) {
+                return response.json();
+            }
+        }).then((jsonResponse) => {
+            console.log('test board response;', jsonResponse)
+        });
+    });
+
     document.getElementById('piece-container').addEventListener('click', event => {
         const clickPositionString = event.target.id.split('-')
         const clickPosition = clickPositionString.map(index => +index)
