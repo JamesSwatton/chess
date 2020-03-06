@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
     game.board.calcAllMoves(game.activePlayer, game.opponent)
-    
+    renderGame.renderMoveBoard();
+
     function cleanBoardForPosting(board) {
         const boardCopy = board.slice(0, 9);
         return boardCopy.map(row => {
