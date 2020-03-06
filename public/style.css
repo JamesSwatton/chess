@@ -53,6 +53,12 @@
     grid-template-rows: repeat(8, 1fr);
 }
 
+#moves{
+    border: 1px black solid;
+    width: 100%;
+    height: 200px;
+}
+
 .grid-square {
     display: flex;
     width: 100%;

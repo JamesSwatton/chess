@@ -1,5 +1,5 @@
 const renderGame = {
-
+    updatePosition: [],
 
     boardTemplate: [
         "01010101",
@@ -81,7 +81,7 @@ const renderGame = {
             for (let j = 0; j < 8; j++) {
                 let currentPiece = pieces[i][j]
                 let pathGrid = document.createElement('div');
-                if(isInCheck(currentPiece)){
+                if (isInCheck(currentPiece)) {
                     pathGrid.classList.add('check')
                 }
                 if (checkForMatchingMovePos([i, j], paths)) {
@@ -108,8 +108,38 @@ const renderGame = {
             return (piece.check === true)
         }
     },
+    renderMoveBoard() {
+        const moveArray = [{
+                type: 'q',
+                moveFrom: 'g6',
+                moveTo: 'h5',
+                capture: ''
+            },
+            {
+                type: 'k',
+                moveFrom: 'h1',
+                moveTo: 'h2',
+                capture: 'x'
+            }
+        ]
+        // const move = {
+        //     type: 'p',
+        //     moveFrom: '',
+        //     moveTo: '',
+        //     capture: 'x'
+        // }
 
+        moveArray.forEach(move => {
+            // let newPosition = piece[x][y]
+            let moveList = document.getElementById('moves')
+            let notation = document.createElement('li');
+            notation.textContent = `${move.type}, ${move.capture},${move.moveFrom}, ${move.moveTo}, `
 
+            moveList.appendChild(notation)
+            console.log('hi', this.updatePosition)
+        })
+
+    }
 }
 
 // module.exports = renderGame;

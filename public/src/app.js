@@ -8,10 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // setup game
     game.board.setupBoard();
-    postBoard(game.board.pieces);
+    // postBoard(game.board.pieces);
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
     game.board.calcAllMoves(game.activePlayer, game.opponent)
+    renderGame.renderMoveBoard();
 
     function cleanBoardForPosting(board) {
         const boardCopy = board.slice(0, 9);
