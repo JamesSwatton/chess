@@ -23,6 +23,13 @@ const board = {
         attackingPiecePosition: [],
     },
 
+    lastMove: {
+        type: null,
+        moveFrom: null,
+        moveTo: null,
+        capture: ''
+    },
+
     getCheckData() {
         if (this.cheeckedPlayer) {
             return {
@@ -41,7 +48,7 @@ const board = {
             for (let x = 0; x < 8; x++) {
                 if (this.boardTemplate[y][x] === '0') {
                     const blank = {
-                        type: 'blank'
+                        type: 'blank',
                     };
                     this.pieces[y].push(blank);
                 } else {
@@ -242,12 +249,33 @@ const board = {
         const y = position[0];
         const x = position[1];
         const oldPosition = piece.currentPos;
-        piece.currentPos = [y, x];
 
+        this.createMoveNotation(piece.currentPos, position, piece.type);
+
+        piece.currentPos = [y, x];
         this.pieces[y][x] = piece;
         this.pieces[oldPosition[0]][oldPosition[1]] = {
             type: 'blank'
         };
+    },
+
+    createMoveNotation(oldPosition, newPosition, type) {
+        const gridChars = 'abcdefgh';
+
+        const lastMove = {
+            type: type,
+            moveFrom: `${oldPosition[0] + 1}${gridChars[oldPosition[1]]}`,
+            moveTo: `${newPosition[0] + 1}${gridChars[newPosition[1]]}`,
+            capture: '' 
+        }
+
+            if (this.pieces[newPosition[0]][newPosition[1]].type === 'blank') {
+                lastMove.capture = '';
+            } else {
+                lastMove.capture = 'x';
+            }
+
+        this.lastMove = lastMove;
     },
 
     clearAllPossibleMoves() {

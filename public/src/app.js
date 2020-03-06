@@ -4,15 +4,15 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     let selectedPiece;
-    console.log(game);
+    lastMoveBoards = {};
 
     // setup game
     game.board.setupBoard();
-    postBoard(game.board.pieces);
+    // postBoard(game.board.pieces);
     renderGame.renderCheckedBoard();
     renderGame.renderPieces(board.pieces);
     game.board.calcAllMoves(game.activePlayer, game.opponent)
-
+    
     function cleanBoardForPosting(board) {
         const boardCopy = board.slice(0, 9);
         return boardCopy.map(row => {
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const newBoard = cleanBoardForPosting(board);
         fetch('http://localhost:3000/board', {
             method: 'POST',
-            body: JSON.stringify({ newBoard }),
+            body: JSON.stringify( newBoard ),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -49,8 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.json();
             }
         }).then((jsonResponse) => {
-            console.log('test board response;', jsonResponse)
-            console.log(board == jsonResponse);
+            lastMoveBoards.moveTo = jsonResponse[0].newBoard;
+            lastMoveBoards.moveFrom = jsonResponse[1].newBoard;
+            // console.log('test board response;', jsonResponse)
+            // console.log('lastMoveBoards', lastMoveBoards);
+            console.log('last move', game.board.lastMove);
         });
     }
 

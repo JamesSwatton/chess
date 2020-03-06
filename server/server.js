@@ -36,7 +36,7 @@ boardRouter.post('/', (req, res, next) => {
         newBoard: req.body
     };
     chessCollection.insertOne(body)
-        .then(() => chessCollection.find().toArray())
+        .then(() => chessCollection.find().limit(2).sort({$natural: -1}).toArray())
         .then((docs) => res.status(201).send(docs));
     ;
 })
